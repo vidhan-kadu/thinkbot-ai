@@ -2,37 +2,53 @@ import "./ChatWindow.css";
 import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
-import { ScaleLoader} from "react-spinners";
-
+import { ScaleLoader } from "react-spinners";
 
 function ChatWindow() {
-  const {prompt,setPrompt, reply, setReply,currThreadId}  = useContext(MyContext);
-  const [loading,setLoading] = useState(false);
-
-  const getReply = async()=>{
+  const { prompt, setPrompt, reply, setReply, currThreadId,prevChats,setPrevChats } = useContext(MyContext);
+  const [loading, setLoading] = useState(false);
+  
+  
+  const getReply = async () => {
     setLoading(true);
-    console.log("message", prompt , "threadId", currThreadId);
+    console.log("message", prompt, "threadId", currThreadId);
     const options = {
-      method:"POST",
-      headers:{
-        "Content-Type": "application/json"
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message:prompt,
-        threadId : currThreadId
-      })
+        message: prompt,
+        threadId: currThreadId,
+      }),
     };
-    try{
- const  response = await fetch("http://localhost:8080/api/chat",options);
- const res = await response.json();
- console.log(res);
- setReply(res.reply);
-    }catch(err){
+    try {
+      const response = await fetch("http://localhost:8080/api/chat", options);
+      const res = await response.json();
+      console.log(res.reply);
+      setReply(res.reply);
+    } catch (err) {
       console.log(err);
     }
     setLoading(false);
-    
-  }
+  };
+
+  //Append new chat to prevChats
+
+  useEffect(()=>{
+    if(prompt && reply){
+      setPrevChats(prevChats =>(
+        [...prevChats,{
+          role : "user",
+          content: prompt
+        },{
+          role : "assistant",
+          content: reply
+        }]
+      ));
+    }
+    setPrompt("");
+  },[reply]);
   return (
     <div className="chatWindow">
       <div className="navbar">
@@ -41,28 +57,27 @@ function ChatWindow() {
         </span>
         <div className="userIconDiv">
           <span className="userIcon">
-            
             <i className="fa-solid fa-user"></i>
           </span>
         </div>
       </div>
       <Chat></Chat>
-      <ScaleLoader color="#fff" loading={loading}>
-
-      </ScaleLoader>
+      <ScaleLoader color="#fff" loading={loading}></ScaleLoader>
       <div className="chatInput">
         <div className="userBox">
-          <input placeholder="Ask anything"
-          value={prompt}
-          onChange={(e)=> setPrompt(e.target.value)}
-          onKeyDown={(e)=> e.key === "Enter"? getReply() :""}
-          >
-          </input>
+          <input
+            placeholder="Ask anything"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            onKeyDown={(e) => (e.key === "Enter" ? getReply() : "")}
+          ></input>
           <div id="submit" onClick={getReply}>
             <i className="fa-solid fa-paper-plane"></i>
           </div>
         </div>
-        <p className="info">ThinkBot AI is evolving — responses may improve over time.</p>
+        <p className="info">
+          ThinkBot AI is evolving — responses may improve over time.
+        </p>
       </div>
     </div>
   );
