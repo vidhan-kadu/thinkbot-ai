@@ -5,12 +5,21 @@ import { useContext, useState, useEffect } from "react";
 import { ScaleLoader } from "react-spinners";
 
 function ChatWindow() {
-  const { prompt, setPrompt, reply, setReply, currThreadId,prevChats,setPrevChats } = useContext(MyContext);
+  const {
+    prompt,
+    setPrompt,
+    reply,
+    setReply,
+    currThreadId,
+    prevChats,
+    setPrevChats,
+    setNewChat,
+  } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
-  
-  
+
   const getReply = async () => {
     setLoading(true);
+    setNewChat(false);
     console.log("message", prompt, "threadId", currThreadId);
     const options = {
       method: "POST",
@@ -35,20 +44,22 @@ function ChatWindow() {
 
   //Append new chat to prevChats
 
-  useEffect(()=>{
-    if(prompt && reply){
-      setPrevChats(prevChats =>(
-        [...prevChats,{
-          role : "user",
-          content: prompt
-        },{
-          role : "assistant",
-          content: reply
-        }]
-      ));
+  useEffect(() => {
+    if (prompt && reply) {
+      setPrevChats((prevChats) => [
+        ...prevChats,
+        {
+          role: "user",
+          content: prompt,
+        },
+        {
+          role: "assistant",
+          content: reply,
+        },
+      ]);
     }
     setPrompt("");
-  },[reply]);
+  }, [reply]);
   return (
     <div className="chatWindow">
       <div className="navbar">

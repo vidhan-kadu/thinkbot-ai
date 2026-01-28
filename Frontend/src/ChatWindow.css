@@ -62,39 +62,36 @@ input {
   padding: 20px;
   font-size: 0.9rem;
   border-radius: 14px;
-      box-shadow: rgba(0, 0, 0, 0.05) 0 54px 55px,
-                rgba(0, 0, 0, 0.05) 0 -12px 30px,
-                rgba(0, 0, 0, 0.05) 0 4px 6px,
-                rgba(0, 0, 0, 0.05) 0 12px 3px,
-                rgba(0, 0, 0, 0.05) 0 -3px 5px;
+  box-shadow:
+    rgba(0, 0, 0, 0.05) 0 54px 55px,
+    rgba(0, 0, 0, 0.05) 0 -12px 30px,
+    rgba(0, 0, 0, 0.05) 0 4px 6px,
+    rgba(0, 0, 0, 0.05) 0 12px 3px,
+    rgba(0, 0, 0, 0.05) 0 -3px 5px;
 }
 
 input:focus {
   outline: none;
 }
 
-
-
-#submit{
-    cursor:pointer;
-    height:35px;
-    width:35px;
-    font-size: 20px;
-    position: absolute;
-    right: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#submit {
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  font-size: 20px;
+  position: absolute;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#submit i:hover{
-    color: #fff;
+#submit i:hover {
+  color: #fff;
 }
 
-.info{
-    font-size: 0.9rem;
-    padding:0.5rem;
-    color:#b4b4b4;
-
-
+.info {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  color: #b4b4b4;
 }
