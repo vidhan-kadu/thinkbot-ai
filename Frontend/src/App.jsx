@@ -31,7 +31,7 @@ function App() {
     setPrevChats,
     allThreads,
     setAllThreads,
-  }; //passing values
+  };                 //passing values
 
   return (
     <div className="app">
