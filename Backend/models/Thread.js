@@ -27,6 +27,13 @@ const ThreadSchema = new mongoose.Schema({
     default: "New Chat",
   },
   messages: [MessageSchema],
+
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false, // false = allows guest mode
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
