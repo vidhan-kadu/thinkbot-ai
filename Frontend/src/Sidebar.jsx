@@ -2,6 +2,7 @@ import "./Sidebar.css";
 import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext";
 import { v1 as uuidv1 } from "uuid";
+import { useAuth } from "./context/AuthContext";
 
 function Sidebar() {
   const {
@@ -15,10 +16,29 @@ function Sidebar() {
     setPrevChats,
   } = useContext(MyContext);
 
+  // /logout, user ,
+  const { token, isAuthenticated } = useAuth();
+
   const getAllThreads = async () => {
+    if (!token) return;
     try {
-      const response = await fetch("http://localhost:8080/api/thread");
+      const response = await fetch("http://localhost:8080/api/thread", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to fetch threads");
+        return;
+      }
       const res = await response.json();
+
+      if (!Array.isArray(res)) {
+        console.error("Threads response is not array", res);
+        return;
+      }
+
       const filteredData = res.map((thread) => ({
         threadId: thread.threadId,
         title: thread.title,
@@ -32,8 +52,12 @@ function Sidebar() {
   };
 
   useEffect(() => {
-    getAllThreads();
-  }, [currThreadId]);
+    if (token) {
+      getAllThreads();
+    } else {
+      setAllThreads([]); //clear sidebar for guest
+    }
+  }, [isAuthenticated, currThreadId]);
 
   const createNewChat = () => {
     setNewChat(true);
@@ -47,8 +71,15 @@ function Sidebar() {
     setCurrThreadId(newThreadId);
 
     try {
+      console.log("Fetching threads with token:", token);
+
       const response = await fetch(
         `http://localhost:8080/api/thread/${newThreadId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       const res = await response.json();
       console.log(res);
@@ -64,7 +95,12 @@ function Sidebar() {
     try {
       const response = await fetch(
         `http://localhost:8080/api/thread/${threadId}`,
-        { method: "DELETE" },
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       const res = await response.json();
       console.log(res);
@@ -95,24 +131,35 @@ function Sidebar() {
         </span>
       </button>
 
-      <ul className="history">
-        {allThreads?.map((thread, idx) => (
-          <li
-            key={idx}
-            onClick={(e) => changeThread(thread.threadId)}
-            className={thread.threadId === currThreadId ? "highlighted" : ""}
-          >
-            {thread.title}
-            <i
-              className="fa-solid fa-trash"
-              onClick={(e) => {
-                e.stopPropagation(); // stop event bubbling
-                deleteThread(thread.threadId);
-              }}
-            ></i>
-          </li>
-        ))}
-      </ul>
+      {isAuthenticated ? (
+        /* LOGGED-IN USER */
+        <ul className="history">
+          {allThreads.map((thread, idx) => (
+            <li
+              key={idx}
+              onClick={() => changeThread(thread.threadId)}
+              className={thread.threadId === currThreadId ? "highlighted" : ""}
+            >
+              {thread.title}
+              <i
+                className="fa-solid fa-trash"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteThread(thread.threadId);
+                }}
+              ></i>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        /* GUEST PREVIEW */
+        <div className="history preview">
+          <p className="preview-text">🔒 Login to unlock chat history</p>
+          <p className="preview-sub">
+            Save conversations • Access past chats • Sync across devices
+          </p>
+        </div>
+      )}
 
       <div className="sign">
         <p>By ThinkBot AI &hearts;</p>

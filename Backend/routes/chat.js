@@ -2,6 +2,7 @@ import express from "express";
 import Thread from "../models/Thread.js";
 import getOpenAIAPIResponse from "../utils/groqai.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+import optionalAuth from "../middleware/optionalAuth.js";
 
 const router = express.Router();
 
@@ -67,10 +68,10 @@ router.delete("/thread/:threadId",  authMiddleware,async (req, res) => {
   }
 });
 
-router.post("/chat", authMiddleware, async (req, res) => {
+router.post("/chat",optionalAuth,  async (req, res) => {
   // console.log("BODY:", req.body);
   const { threadId, message } = req.body;
-  const userId = req.user.userId;
+  const userId = req.user ? req.user.userId:null;
   
   if (!threadId || !message) {
     res.status(400).json({ error: "missing required fields" });

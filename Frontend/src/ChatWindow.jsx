@@ -3,6 +3,8 @@ import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
 import { ScaleLoader } from "react-spinners";
+import { useAuth } from "./context/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 function ChatWindow() {
   const {
@@ -16,24 +18,33 @@ function ChatWindow() {
     setNewChat,
   } = useContext(MyContext);
 
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [isOpen, setisOpen] = useState(false);
+
+  const { token, logout, isAuthenticated} = useAuth();
 
   const getReply = async () => {
     setLoading(true);
     setNewChat(false);
     console.log("message", prompt, "threadId", currThreadId);
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: prompt,
-        threadId: currThreadId,
-      }),
-    };
+   const headers = {
+  "Content-Type": "application/json",
+};
+
+if (token) {
+  headers.Authorization = `Bearer ${token}`;
+}
+
+const options = {
+  method: "POST",
+  headers,
+  body: JSON.stringify({
+    message: prompt,
+    threadId: currThreadId,
+  }),
+};
     try {
       const response = await fetch("http://localhost:8080/api/chat", options);
       const res = await response.json();
@@ -81,16 +92,47 @@ function ChatWindow() {
       </div>
       {isOpen && (
         <div className="dropDown">
-          <div className="dropDownItem">
-            <i class="fa-solid fa-gear"></i> &nbsp;Settings
-          </div>
-          <div className="dropDownItem">
-            <i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upgrade plan
-          </div>
 
-          <div className="dropDownItem">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;Log out
-          </div>
+          {!isAuthenticated && (
+            <>
+           <div className="dropDownItem" onClick={() =>{
+            setisOpen(false);
+            navigate("/login");
+            }}>
+          <i className="fa-solid fa-right-to-bracket"></i>&nbsp;Login
+        </div>
+
+        <div className="dropDownItem" onClick={()=>{
+          setisOpen(false);
+          navigate("/signup");
+        }}
+        >
+          <i className="fa-solid fa-user-plus"></i>&nbsp;Sign up
+        </div>
+         <div className="dropDownHint">
+          🔒 Login to save conversations
+        </div>
+        </>
+      )}
+
+      {isAuthenticated && (
+         <>
+        <div className="dropDownItem">
+          <i className="fa-solid fa-gear"></i>&nbsp;Settings
+        </div>
+
+        <div className="dropDownItem">
+          <i className="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upgrade plan
+        </div>
+
+        <div className="dropDownItem" onClick={()=>{
+          logout();
+          setisOpen(false);
+        }}>
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;Log out
+        </div>
+      </>
+      )}
         </div>
       )}
       <Chat></Chat>
