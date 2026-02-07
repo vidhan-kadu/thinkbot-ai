@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 function Signup() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -12,8 +17,6 @@ function Signup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  
-  
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
@@ -34,10 +37,8 @@ function Signup() {
         return;
       }
 
-      //  Save token & user in AuthContext
       login(data.token, data.user);
 
-      // Redirect to main app
       navigate("/");
     } catch (err) {
       setError("Something went wrong");
@@ -47,45 +48,90 @@ function Signup() {
   };
 
   return (
-    <div className="auth-page">
-      <h2>Create your ThinkBot AI account</h2>
+    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950">
+      <Card className="w-full max-w-md overflow-hidden border shadow-2xl bg-neutral-900/70 backdrop-blur-xl border-neutral-800">
+        <CardHeader className="space-y-2 text-center">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-white">
+            Create your account
+          </CardTitle>
+          <p className="text-sm text-neutral-400">
+            Start your AI conversations
+          </p>
+        </CardHeader>
 
-      <form onSubmit={handleSignup}>
-        <input
-          type="text"
-          placeholder="Full name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <CardContent className="p-6 sm:p-8">
+          <form onSubmit={handleSignup} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-neutral-300">
+                Name
+              </Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="box-border w-full px-4 border h-11 bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-zinc-400/30 focus-visible:border-zinc-400"
+                required
+              />
+            </div>
 
-        <input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-neutral-300">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="box-border w-full px-4 border h-11 bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-zinc-400/30 focus-visible:border-zinc-400"
+                required
+              />
+            </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-neutral-300">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="box-border w-full px-4 border h-11 bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-zinc-400/30 focus-visible:border-zinc-400"
+                required
+              />
+            </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating account..." : "Sign up"}
-        </button>
+            {error && (
+              <p className="text-sm text-center text-red-500">{error}</p>
+            )}
 
-        {error && <p className="auth-error">{error}</p>}
-      </form>
+            <div className="flex justify-center ">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full px-4 max-w-xs mx-auto font-medium transition-all duration-150 text-black bg-white shadow-none h-11 ring-0 focus:ring-0 focus-visible:ring-0 focus-visible:outline-none hover:bg-zinc-300 active:scale-[0.99] "
+              >
+                {loading ? "Creating account..." : "Sign up"}
+              </Button>
+            </div>
+          </form>
 
-      <p className="auth-switch">
-        Already have an account?{" "}
-        <span onClick={() => navigate("/login")}>Login</span>
-      </p>
+          <div className="mt-6 text-sm text-center text-neutral-400">
+            Already have an account?{" "}
+            <span
+              onClick={() => navigate("/login")}
+              className="text-white cursor-pointer hover:underline"
+            >
+              Login
+            </span>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,26 +1,25 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 function Login() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const res = await fetch("http://localhost:8080/api/auth/login", {
@@ -33,41 +32,88 @@ function Login() {
 
       if (!res.ok) {
         setError(data.message || "Login failed");
+        setLoading(false);
         return;
       }
 
-      //  CONNECT TO AuthContext
       login(data.token, data.user);
+      navigate("/");
     } catch (err) {
       setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <h2>Login to ThinkBot AI</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950">
+      <Card className="w-full max-w-md overflow-hidden border shadow-2xl bg-neutral-900/70 backdrop-blur-xl border-neutral-800">
+        <CardHeader className="space-y-2 text-center">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-white">
+            Login to ThinkBot AI
+          </CardTitle>
+          <p className="text-sm text-neutral-400">
+            Continue your AI conversations
+          </p>
+        </CardHeader>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-neutral-300">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="box-border w-full px-4 border h-11 bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-zinc-400/30 focus-visible:border-zinc-400"
+                required
+              />
+            </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-neutral-300">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="box-border w-full px-4 border h-11 bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-zinc-400/30 focus-visible:border-zinc-400"
+              />
+            </div>
 
-        <button type="submit">Login</button>
+            {error && (
+              <p className="text-sm text-center text-red-500">{error}</p>
+            )}
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
+            <div className="flex justify-center ">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full px-4 max-w-xs mx-auto font-medium transition-all duration-150 text-black bg-white shadow-none h-11 ring-0 focus:ring-0 focus-visible:ring-0 focus-visible:outline-none hover:bg-zinc-300 active:scale-[0.99] "
+              >
+                {loading ? "Signing in..." : "Login"}
+              </Button>
+            </div>
+          </form>
+
+          <div className="mt-6 text-sm text-center text-neutral-400">
+            Don’t have an account?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              className="text-white cursor-pointer hover:underline"
+            >
+              Sign up
+            </span>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
