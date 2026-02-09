@@ -108,7 +108,8 @@ function ChatWindow() {
                   navigate("/login");
                 }}
               >
-                <i className="fa-solid fa-right-to-bracket"></i>&nbsp;Login
+                <i className="fa-solid fa-right-to-bracket"></i>
+                &nbsp;&nbsp;Login
               </div>
 
               <div
@@ -118,9 +119,11 @@ function ChatWindow() {
                   navigate("/signup");
                 }}
               >
-                <i className="fa-solid fa-user-plus"></i>&nbsp;Sign up
+                <i className="fa-solid fa-user-plus"></i>&nbsp;&nbsp;Sign up
               </div>
-              <div className="dropDownHint">🔒 Login to save conversations</div>
+              <div className="dropDownHint">
+                🔒 &nbsp;Login to save conversations
+              </div>
             </>
           )}
 

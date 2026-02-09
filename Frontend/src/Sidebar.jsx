@@ -155,14 +155,16 @@ function Sidebar() {
         /* GUEST PREVIEW */
         <div className="history preview">
           <p className="preview-text">🔒 Login to unlock chat history</p>
+          <br></br>
           <p className="preview-sub">
-            Save conversations • Access past chats • Sync across devices
+            • Save conversations.<br></br>• Access Past Chats.<br></br>• Sync
+            Across Devices.
           </p>
         </div>
       )}
 
       <div className="sign">
-        <p>By ThinkBot AI &hearts;</p>
+        <p>By Vidhan Kadu &hearts;</p>
       </div>
     </section>
   );

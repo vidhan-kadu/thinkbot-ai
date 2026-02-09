@@ -48,7 +48,16 @@ function Signup() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950">
+    <div className="relative flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950">
+      {/* Back to chat – top left */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-6 left-6 flex items-center gap-2 rounded-ls border border-neutral-700 px-3 py-3.5
+               text-sm text-neutral-300 hover:text-white hover:border-neutral-400 transition"
+      >
+        ← Back to Chat
+      </button>
+
       <Card className="w-full max-w-md overflow-hidden border shadow-2xl bg-neutral-900/70 backdrop-blur-xl border-neutral-800">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold tracking-tight text-white">
