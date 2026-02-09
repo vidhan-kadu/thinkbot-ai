@@ -1,6 +1,6 @@
 .sidebar {
-  background-color: #171717;
-  color: #b4b4b4;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
   height: 100vh;
   width: 320px;
   display: flex;
@@ -17,7 +17,8 @@ button {
   padding: 10px;
   border-radius: 10px;
   background-color: transparent;
-  border: solid 0.5px rgba(255, 255, 255, 0.5);
+  border: solid 0.5px var(--sidebar-border);
+  color: var(--sidebar-text);
   cursor: pointer;
 }
 .logo {
@@ -33,7 +34,7 @@ button span {
 }
 
 button:hover {
-  background-color: rgba(180, 180, 180, 0.05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .history {
@@ -46,6 +47,7 @@ button:hover {
 }
 
 .history li {
+  color: var(--sidebar-text);
   list-style-type: none;
   cursor: pointer;
   padding: 2px 5px;
@@ -56,7 +58,7 @@ button:hover {
 }
 
 .history li:hover {
-  background-color: rgba(180, 180, 180, 0.05);
+  background-color: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
 }
 
@@ -76,7 +78,11 @@ button:hover {
   margin: 10px;
   font-size: 14px;
   text-align: center;
-  border-top: solid 0.25px rgba(255, 255, 255, 0.5);
+  border-top: solid 0.25px var(--sidebar-border);
+  color: var(--sidebar-text);
+}
+.sign p {
+  color: var(--sidebar-text);
 }
 
 .fa-trash {
@@ -85,13 +91,28 @@ button:hover {
   right: 0;
 }
 
+.fa-solid {
+  color: var(--chat-text-secondary);
+}
+
 .history li:hover .fa-trash {
   opacity: 1;
-  color: #fff;
+  color: var(--sidebar-text);
+}
+.preview-text {
+  color: var(--sidebar-text);
+}
+
+.preview-sub {
+  color: var(--sidebar-text);
 }
 
 .fa-trash:hover {
   color: #f87171 !important;
+}
+
+.sidebar i:hover {
+  opacity: 0.7;
 }
 
 .highlighted {

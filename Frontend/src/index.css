@@ -30,6 +30,39 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem
   }
+
+  .dark {
+  --sidebar-bg: #171717;
+  --sidebar-text: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.5);
+
+  --chat-bg: #212121;
+  --chat-input-bg: rgba(255, 255, 255, 0.05);
+  --chat-text-secondary: #b4b4b4;
+
+  --dropdown-bg: #323232;
+}
+
+.light {
+  --sidebar-bg: #f5f5f5;
+  --sidebar-text: #1a1a1a;
+  --sidebar-border: rgba(0, 0, 0, 0.2);
+
+  --chat-bg: #ffffff;
+  --chat-input-bg: #f0f0f0;
+  --chat-text-secondary: #555555;
+
+  --dropdown-bg: #ffffff;
+}
+
+
+body.dark{
+  --sidebar-text:#ffffff;
+  --chat-text-primary:#ffffff;
+  --chat-text-secondary:#ffffff;
+}
+
+
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;

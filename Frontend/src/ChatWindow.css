@@ -1,5 +1,6 @@
 .chatWindow {
-  background-color: #212121;
+  background-color: var(--chat-bg);
+  color: var(--sidebar-text);
   height: 100vh;
   width: 100%;
   display: flex;
@@ -19,10 +20,12 @@
 
 .navbar span {
   margin: 1rem 2rem;
+  color: var(--chat-text-secondary)
 }
 
 .userIconDiv {
   margin: 1rem 2rem;
+  color: var(--sidebar-text);
 }
 
 .userIcon {
@@ -58,7 +61,8 @@
 input {
   width: 100%;
   border: none;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color:var(--input-bg);
+  color: var(--sidebar-text);
   padding: 20px;
   font-size: 0.9rem;
   border-radius: 14px;
@@ -68,6 +72,10 @@ input {
     rgba(0, 0, 0, 0.05) 0 4px 6px,
     rgba(0, 0, 0, 0.05) 0 12px 3px,
     rgba(0, 0, 0, 0.05) 0 -3px 5px;
+}
+
+input::placeholder {
+  color: var(--chat-text-secondary);
 }
 
 input:focus {
@@ -86,14 +94,22 @@ input:focus {
   justify-content: center;
 }
 
-#submit i:hover {
-  color: #fff;
+#submit i{
+  color: var(--sidebar-text);
 }
+#submit i:hover {
+
+  opacity: 0.8;
+}
+
+
+
+
 
 .info {
   font-size: 0.9rem;
   padding: 0.5rem;
-  color: #b4b4b4;
+  color:var(--chat-text-secondary);
 }
 
 /* dropDown part */
@@ -106,7 +122,8 @@ input:focus {
 
   width: 150px;
 
-  background-color: #323232;
+  background-color:var(--dropdown-bg);
+  color: var(--sidebar-text);
   padding: 0.3rem 0.5rem;
   border-radius: 7px;
   text-align: left;
@@ -119,9 +136,24 @@ input:focus {
   margin: 0.3rem 0rem;
   padding: 0.5rem 0.2rem;
   cursor: pointer;
+  color: var(--chat-text-secondary);
+}
+
+.dropDownHint{
+ 
+  color: var(--chat-text-secondary);
+  padding: 0.14rem;
 }
 
 .dropDownItem:hover {
-  background-color: rgba(100, 100, 100, 0.2);
+  background-color: rgba(0, 0, 0, 0.08);
   border-radius: 6px;
 }
+
+.chatLoader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.2rem 0;
+}
+

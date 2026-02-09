@@ -1,8 +1,14 @@
 .chats {
   max-width: 700px;
   overflow-y: scroll;
-  padding: 8rem;
+  padding: 4rem 2rem;
   scroll-behavior: smooth;
+}
+
+.startChatTitle {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--chat-text-primary);
 }
 /* Chrome, Edge, Safari */
 .chats::-webkit-scrollbar {
@@ -14,12 +20,12 @@
 }
 
 .chats::-webkit-scrollbar-thumb {
-  background-color: #2b2b2b;
+  background-color: #c1c1c1;
   border-radius: 10px;
 }
 
 .chats::-webkit-scrollbar-thumb:hover {
-  background-color: #3a3a3a;
+  background-color: #a8a8a8;
 }
 
 /* Firefox */
@@ -34,6 +40,32 @@
   font-size: 0.9rem;
 }
 
+.gptDiv > * {
+  margin-bottom: 1rem;
+}
+
+.gptDiv p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.gptDiv ul,
+.gptDiv ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.gitDiv li {
+  margin-bottom: 0.5rem;
+}
+
+.gitDiv {
+  margin-bottom: 1.5rem;
+}
+.userDiv {
+  margin-bottom: 1.2rem;
+}
+
 .gptDiv {
   text-align: left;
   font-size: 0.9rem;
@@ -41,11 +73,83 @@
 
 .userMessage {
   background-color: #323232;
+
   padding: 10px 20px;
   border-radius: 14px;
   margin-left: 15rem;
   max-width: 500px;
   width: fit-content;
+}
+
+body.light .gptDiv {
+  color: #1a1a1a;
+}
+
+body.light .gptDiv h1,
+body.light .gptDiv h2,
+body.light .gptDiv h3,
+body.light .gptDiv h4,
+body.light .gptDiv h5,
+body.light .gptDiv h6 {
+  color: #000000;
+  font-weight: 700;
+}
+
+body.light .gptDiv p,
+body.light .gptDiv li {
+  color: #222222;
+  font-weight: 400;
+}
+
+body.light .gptDiv table {
+  border-collapse: collapse;
+}
+
+body.light .gptDiv th,
+body.light .gptDiv td {
+  border: 1px solid #cccccc;
+  padding: 6px 10px;
+  font-weight: 500;
+}
+
+body.dark .gptDiv strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+body.dark .gptDiv {
+  color: #e5e5e5;
+}
+
+body.light .gptDiv {
+  color: #1a1a1a;
+}
+
+body.light .gptDiv p strong {
+  display: inline-block;
+  font-weight: 700;
+  color: #111111;
+}
+
+body.light .gptDiv li strong {
+  display: inline-block;
+  font-weight: 700;
+  color: #111111;
+}
+
+body.light.gptDiv strong {
+  color: #111111;
+  font-weight: 700;
+}
+
+body.dark .gptDiv h1,
+body.dark .gptDiv h2,
+body.dark .gptDiv h3,
+body.dark .gptDiv h4,
+body.dark .gptDiv h5,
+body.dark .gptDiv h6 {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .hljs {
