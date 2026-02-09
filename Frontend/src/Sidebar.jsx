@@ -22,7 +22,7 @@ function Sidebar() {
   const getAllThreads = async () => {
     if (!token) return;
     try {
-      const response = await fetch("http://localhost:8080/api/thread", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/thread`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ function Sidebar() {
       console.log("Fetching threads with token:", token);
 
       const response = await fetch(
-        `http://localhost:8080/api/thread/${newThreadId}`,
+        `${import.meta.env.VITE_API_URL}/api/thread/${newThreadId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ function Sidebar() {
   const deleteThread = async (threadId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/thread/${threadId}`,
+        `${import.meta.env.VITE_API_URL}/api/thread/${threadId}`,
         {
           method: "DELETE",
           headers: {
