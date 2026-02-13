@@ -4,7 +4,7 @@ import { MyContext } from "./MyContext";
 import { v1 as uuidv1 } from "uuid";
 import { useAuth } from "./context/AuthContext";
 
-function Sidebar() {
+function Sidebar({ isOpen, onClose }) {
   const {
     allThreads,
     setAllThreads,
@@ -15,18 +15,21 @@ function Sidebar() {
     setCurrThreadId,
     setPrevChats,
   } = useContext(MyContext);
-
+  console.log("Sidebar open:", isOpen);
   // /logout, user ,
   const { token, isAuthenticated } = useAuth();
 
   const getAllThreads = async () => {
     if (!token) return;
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/thread`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/thread`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         console.error("Failed to fetch threads");
@@ -118,55 +121,72 @@ function Sidebar() {
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   return (
-    <section className="sidebar">
-      <button onClick={createNewChat}>
-        <img
-          src="/blacklogo.png"
-          alt="gpt logo"
-          className="logo"
-        ></img>
-        <span>
-          <i className="fa-solid fa-pen-to-square"></i>
-        </span>
-      </button>
+    <>
+      <section className={`sidebar ${isOpen ? "open" : ""}`}>
+        <button onClick={createNewChat}>
+          <img src="/blacklogo.png" alt="gpt logo" className="logo"></img>
+          <span>
+            <i className="fa-solid fa-pen-to-square"></i>
+          </span>
+        </button>
 
-      {isAuthenticated ? (
-        /* LOGGED-IN USER */
-        <ul className="history">
-          {allThreads.map((thread, idx) => (
-            <li
-              key={idx}
-              onClick={() => changeThread(thread.threadId)}
-              className={thread.threadId === currThreadId ? "highlighted" : ""}
-            >
-              {thread.title}
-              <i
-                className="fa-solid fa-trash"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteThread(thread.threadId);
+        {isAuthenticated ? (
+          /* LOGGED-IN USER */
+          <ul className="history">
+            {allThreads.map((thread, idx) => (
+              <li
+                key={idx}
+                onClick={() => {
+                  changeThread(thread.threadId);
+                  onClose();
                 }}
-              ></i>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        /* GUEST PREVIEW */
-        <div className="history preview">
-          <p className="preview-text">🔒 Login to unlock chat history</p>
-          <br></br>
-          <p className="preview-sub">
-            • Save conversations.<br></br>• Access Past Chats.<br></br>• Sync
-            Across Devices.
-          </p>
-        </div>
-      )}
+                className={
+                  thread.threadId === currThreadId ? "highlighted" : ""
+                }
+              >
+                {thread.title}
+                <i
+                  className="fa-solid fa-trash"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteThread(thread.threadId);
+                  }}
+                ></i>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          /* GUEST PREVIEW */
+          <div className="history preview">
+            <p className="preview-text">🔒 Login to unlock chat history</p>
+            <br></br>
+            <p className="preview-sub">
+              • Save conversations.<br></br>• Access Past Chats.<br></br>• Sync
+              Across Devices.
+            </p>
+          </div>
+        )}
 
-      <div className="sign">
-        <p>By Vidhan Kadu &hearts;</p>
-      </div>
-    </section>
+        <div className="sign">
+          <p>By Vidhan Kadu &hearts;</p>
+        </div>
+      </section>
+
+      {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
+    </>
   );
 }
 export default Sidebar;

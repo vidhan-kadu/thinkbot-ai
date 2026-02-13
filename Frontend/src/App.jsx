@@ -24,6 +24,8 @@ function App() {
 
   const [allThreads, setAllThreads] = useState([]);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const providerValues = {
     prompt,
     setPrompt,
@@ -37,7 +39,7 @@ function App() {
     setPrevChats,
     allThreads,
     setAllThreads,
-  };     //passing values
+  }; //passing values
 
   return (
     <Routes>
@@ -56,8 +58,14 @@ function App() {
         element={
           <MyContext.Provider value={providerValues}>
             <div className="app">
-              <Sidebar />
-              <ChatWindow />
+              <Sidebar
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+              />
+
+              <ChatWindow
+                onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+              />
             </div>
           </MyContext.Provider>
         }

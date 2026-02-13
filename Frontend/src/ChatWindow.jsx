@@ -6,7 +6,7 @@ import { ScaleLoader } from "react-spinners";
 import { useAuth } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "./context/ThemeContext";
-function ChatWindow() {
+function ChatWindow({ onToggleSidebar }) {
   const {
     prompt,
     setPrompt,
@@ -48,7 +48,10 @@ function ChatWindow() {
       }),
     };
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, options);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/chat`,
+        options,
+      );
       const res = await response.json();
       console.log(res.reply);
       setReply(res.reply);
@@ -84,6 +87,13 @@ function ChatWindow() {
   return (
     <div className="chatWindow">
       <div className="navbar">
+        <button
+          className="sidebar-toggle"
+          onClick={() => onToggleSidebar()}
+          aria-label="Toggle sidebar"
+        >
+          <i className="fa-solid fa-bars"></i>
+        </button>
         <span>
           ThinkBot AI <i className="fa-solid fa-chevron-down"></i>
         </span>
